@@ -1,0 +1,5 @@
+#!/bin/sh
+# msgprune: shrink an Android phone's SMS/MMS history, keep the text. See README.md.
+# Uses the python3 that ships with macOS (3.8+); nothing to pip install.
+here="$(cd "$(dirname "$0")" && pwd)"
+PYTHONPATH="$here/src${PYTHONPATH:+:$PYTHONPATH}" exec python3 -m msgprune "$@"

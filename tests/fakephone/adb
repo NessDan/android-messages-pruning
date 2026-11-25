@@ -1,0 +1,68 @@
+#!/usr/bin/env python3
+"""A stand-in for `adb` used by the tests.
+
+`adb shell <cmd>` runs <cmd> with the local /bin/sh, with tests/fakephone/bin first on PATH so
+`content`, `appops`, `dumpsys`, ... hit a fake telephony store in $FAKEPHONE_ROOT.
+Paths under /data/local/tmp are mapped into $FAKEPHONE_ROOT.
+"""
+import os
+import shutil
+import subprocess
+import sys
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+ROOT = os.environ["FAKEPHONE_ROOT"]
+SERIAL = os.environ.get("FAKEPHONE_SERIAL", "FAKE11PRO")
+MODEL = os.environ.get("FAKEPHONE_MODEL", "Pixel_11_Pro")
+
+
+def remap(text):
+    return text.replace("/data/local/tmp", os.path.join(ROOT, "data/local/tmp"))
+
+
+def main():
+    args = sys.argv[1:]
+    if args[:1] == ["-s"]:
+        if args[1] != SERIAL:
+            sys.stderr.write(f"adb: device '{args[1]}' not found\n")
+            return 1
+        args = args[2:]
+    if not args:
+        return 1
+    cmd, rest = args[0], args[1:]
+    if cmd == "devices":
+        state = os.environ.get("FAKEPHONE_STATE", "device")
+        print("List of devices attached")
+        if state != "none":
+            print(f"{SERIAL}\t{state} usb:1-1 product:fake model:{MODEL} device:fake transport_id:7")
+        print()
+        return 0
+    if cmd == "version":
+        print("Android Debug Bridge version 1.0.41\nVersion 0.0.0-fake")
+        return 0
+    if cmd in ("shell", "exec-out"):
+        while rest and rest[0] in ("-T", "-t", "-n", "-x"):
+            rest = rest[1:]
+        env = dict(os.environ)
+        env["PATH"] = os.path.join(HERE, "bin") + os.pathsep + env.get("PATH", "")
+        return subprocess.call(["/bin/sh", "-c", remap(" ".join(rest))], env=env,
+                               stdin=subprocess.DEVNULL)
+    if cmd == "push":
+        src, dst = rest[0], remap(rest[1])
+        os.makedirs(os.path.dirname(dst), exist_ok=True)
+        with open(src, "rb") as fh:
+            data = fh.read()
+        try:
+            data = remap(data.decode("utf-8")).encode("utf-8")
+        except UnicodeDecodeError:
+            pass
+        with open(dst, "wb") as fh:
+            fh.write(data)
+        print(f"{src}: 1 file pushed, 0 skipped.")
+        return 0
+    sys.stderr.write(f"fake adb: unsupported command {cmd}\n")
+    return 1
+
+
+if __name__ == "__main__":
+    sys.exit(main())

@@ -1,0 +1,5 @@
+# Your messages metadata and attachment backups: never commit these.
+data/
+backups/
+__pycache__/
+*.pyc
