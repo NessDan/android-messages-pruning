@@ -1,0 +1,64 @@
+<!doctype html>
+<meta charset="utf-8">
+<!-- Source for docs/images/how-it-works.png (rendered by make_screenshots.py at 960x400, 2x). -->
+<style>
+  html, body { margin: 0; background: transparent; }
+  svg { display: block; font-family: -apple-system, "Helvetica Neue", Arial, sans-serif; }
+  .mono { font-family: Menlo, "DejaVu Sans Mono", monospace; }
+</style>
+<svg width="960" height="400" viewBox="0 0 960 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#000" flood-opacity="0.28"/>
+    </filter>
+    <marker id="a-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#89b4fa"/>
+    </marker>
+    <marker id="a-orange" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#fab387"/>
+    </marker>
+    <marker id="a-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#f38ba8"/>
+    </marker>
+  </defs>
+
+  <rect x="12" y="10" width="936" height="372" rx="14" fill="#1e1e2e" stroke="#000" stroke-opacity=".25" filter="url(#shadow)"/>
+
+  <!-- Your computer -->
+  <rect x="40" y="38" width="290" height="318" rx="10" fill="#181825" stroke="#313244"/>
+  <text x="60" y="70" fill="#cdd6f4" font-size="16" font-weight="700">💻  Your computer</text>
+
+  <rect x="70" y="96" width="230" height="76" rx="10" fill="#1e1e2e" stroke="#fab387" stroke-width="2"/>
+  <text x="185" y="128" text-anchor="middle" class="mono" fill="#fab387" font-size="17" font-weight="700">backups/</text>
+  <text x="185" y="152" text-anchor="middle" fill="#a6adc8" font-size="12.5">a copy of every removed file</text>
+
+  <rect x="70" y="250" width="230" height="76" rx="10" fill="#1e1e2e" stroke="#89b4fa" stroke-width="2"/>
+  <text x="185" y="282" text-anchor="middle" class="mono" fill="#ffffff" font-size="18" font-weight="700">msgprune</text>
+  <text x="185" y="306" text-anchor="middle" fill="#a6adc8" font-size="12.5">scan · preview · prune</text>
+
+  <!-- Android phone -->
+  <rect x="560" y="38" width="362" height="318" rx="10" fill="#181825" stroke="#313244"/>
+  <text x="580" y="70" fill="#cdd6f4" font-size="16" font-weight="700">📱  Android phone</text>
+
+  <rect x="585" y="88" width="312" height="122" rx="10" fill="#1e1e2e" stroke="#a6e3a1" stroke-width="2"/>
+  <text x="605" y="116" fill="#cdd6f4" font-size="15" font-weight="700">SMS/MMS store <tspan fill="#a6adc8" font-weight="400" font-size="12.5">(part of Android)</tspan></text>
+  <text x="605" y="148" fill="#a6e3a1" font-size="13.5">✓  Texts: always kept</text>
+  <text x="605" y="174" fill="#a6e3a1" font-size="13.5">✓  MMS photos &amp; videos: removable</text>
+  <text x="605" y="196" fill="#a6adc8" font-size="12">older chats, group chats with iPhones</text>
+
+  <rect x="585" y="228" width="312" height="108" rx="10" fill="#1e1e2e" stroke="#f38ba8" stroke-width="2"/>
+  <text x="605" y="256" fill="#cdd6f4" font-size="15" font-weight="700">Google Messages' own storage</text>
+  <text x="605" y="286" fill="#f38ba8" font-size="13.5">✕  RCS photos &amp; videos</text>
+  <text x="605" y="310" fill="#a6adc8" font-size="12">only Google Messages can delete these</text>
+
+  <!-- arrows -->
+  <path d="M583,124 L304,134" stroke="#fab387" stroke-width="2" stroke-dasharray="6 5" fill="none" marker-end="url(#a-orange)"/>
+  <text x="444" y="116" text-anchor="middle" fill="#fab387" font-size="12.5">copied before removal</text>
+
+  <path d="M302,268 L581,170" stroke="#89b4fa" stroke-width="2.2" fill="none" marker-end="url(#a-blue)"/>
+  <rect x="380" y="204" width="124" height="26" rx="13" fill="#1e1e2e" stroke="#89b4fa" stroke-opacity=".6"/>
+  <text x="442" y="222" text-anchor="middle" fill="#cdd6f4" font-size="12.5">USB cable (adb)</text>
+
+  <path d="M302,300 L581,284" stroke="#f38ba8" stroke-width="2" stroke-dasharray="6 5" fill="none" marker-end="url(#a-red)"/>
+  <text x="444" y="314" text-anchor="middle" fill="#f38ba8" font-size="12.5">✕ no access (Android blocks it)</text>
+</svg>

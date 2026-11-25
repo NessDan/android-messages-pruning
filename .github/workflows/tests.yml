@@ -10,14 +10,20 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - { os: ubuntu-latest, python: "3.9" }
           - { os: ubuntu-latest, python: "3.13" }
           - { os: macos-latest, python: "3.13" }
+          # the python3 that ships with macOS (3.9), which is what ./msgprune uses on a Mac
+          - { os: macos-latest, python: "system" }
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v5
-      - uses: actions/setup-python@v6
+      - if: matrix.python != 'system'
+        uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python }}
       - name: Run the test suite against the fake phone
-        run: python3 -m unittest discover -s tests -v
+        env:
+          PY: ${{ matrix.python == 'system' && '/usr/bin/python3' || 'python3' }}
+        run: |
+          "$PY" --version
+          "$PY" -m unittest discover -s tests -v

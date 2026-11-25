@@ -183,11 +183,26 @@ def render(lines, png, chrome, title):
                        check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=120)
 
 
+def render_page(page_path, png, chrome, width, height):
+    with tempfile.TemporaryDirectory() as tmp:
+        subprocess.run([chrome, "--headless=new", "--disable-gpu", "--hide-scrollbars",
+                        f"--user-data-dir={os.path.join(tmp, 'profile')}", "--no-first-run",
+                        "--force-device-scale-factor=2", "--default-background-color=00000000",
+                        f"--window-size={width},{height}", f"--screenshot={png}",
+                        "file://" + page_path],
+                       check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=120)
+
+
 def main():
     chrome = next((c for c in CHROME_CANDIDATES if c and os.path.exists(c)), None)
     if not chrome:
         sys.exit("Chrome/Chromium not found (set CHROME=/path/to/chrome)")
     os.makedirs(OUT, exist_ok=True)
+    render_page(os.path.join(HERE, "how-it-works.html"), os.path.join(OUT, "how-it-works.png"),
+                chrome, 960, 400)
+    print("saved docs/images/how-it-works.png")
+    if "--diagram-only" in sys.argv:
+        return
     phone = tempfile.mkdtemp(prefix="msgprune-demo-phone-")
     demo_paths = [os.path.join(PROJECT, d, DEMO_DIR) for d in ("data", "backups")]
     for p in demo_paths:  # only ever the demo phone's folders

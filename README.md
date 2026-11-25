@@ -48,20 +48,9 @@ you pick. It saves a copy of each one on your computer first.
 
 Your message history lives in **two places** on the phone, and that decides what any tool can do:
 
-```mermaid
-flowchart LR
-    subgraph computer["💻 Your computer"]
-        tool["msgprune"]
-        backup[("backups/<br/>copies of every<br/>removed file")]
-    end
-    subgraph phone["📱 Android phone"]
-        store["SMS/MMS store<br/>(part of Android)<br/>texts + MMS photos/videos"]
-        rcs["Google Messages' own storage<br/>RCS chat photos/videos"]
-    end
-    tool -- "USB (adb): read, copy, remove" --> store
-    store -. "copied before removal" .-> backup
-    tool -. "❌ Android doesn't allow access" .-> rcs
-```
+<p align="center">
+  <img src="docs/images/how-it-works.png" width="820" alt="How msgprune works: your computer talks to the phone over a USB cable (adb). It can remove MMS photos and videos from Android's SMS/MMS store, copying each one to a backups folder first. It has no access to Google Messages' own storage, where RCS photos and videos live.">
+</p>
 
 | Message type | What it is | Can msgprune remove its attachments? |
 |---|---|---|
